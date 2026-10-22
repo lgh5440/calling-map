@@ -1,0 +1,1 @@
+(window.CMDATA=window.CMDATA||{})["unmapped_summary.json"]={"total":216,"univ":179,"special_school":1,"special_class":5,"regular":23,"org":8,"unique_schools_once":211,"note":"범주 합산(603 산식과 같음). 생성: count_unmapped.py --write-summary"};

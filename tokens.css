@@ -1,0 +1,158 @@
+/* 이음(E:UM) 웹 디자인 토큰 v1 */
+
+:root {
+
+  /* ============================================================
+     TIER 1 — PRIMITIVES (리터럴은 이 블록에만 존재)
+     ============================================================ */
+
+  /* 블루 (정본 §3 Primary Blue — hex 그대로) */
+  --p-blue-main: #2F73F2;
+  --p-blue-main-rgb: 47, 115, 242;
+  --p-blue-deep: #1F5FD9;
+  --p-blue-deep-rgb: 31, 95, 217;
+  --p-blue-light: #6FA7FF;
+  --p-blue-light-rgb: 111, 167, 255;
+
+  /* 배경 (정본 §3 Background — hex 그대로) */
+  --p-bg-white: #FFFFFF;
+  --p-bg-gray-light: #F5F7FA;
+  --p-bg-blue-pale: #EAF3FF;
+  --p-bg-blue-panel: #DDEEFF;
+
+  /* 액센트 (정본 §3 Accent — 주제당 1색만 허용, hex 그대로) */
+  --p-accent-mint: #20C997;
+  --p-accent-yellow: #FFD43B;
+  --p-accent-coral: #FF7A70;
+  --p-accent-violet: #8C7CFF;
+
+  /* 패밀리 시그니처: eum-card .frame 원본과 동일한 무지개 프레임 그라데이션 */
+  --rainbow-frame-gradient: linear-gradient(135deg, #FF9AD8, #FFD98C, #8CC7FF, #18DDEB, #B98CFF);
+
+  /* 잉크(텍스트) — 정본 §4 "화이트 배경: 검정, 진회색 제목" 지침의 구현.
+     ★비고: 이 3개 값은 정본이 지정한 리터럴이 아니라, 정본이 색을 못박지 않은
+     "진회색 제목" 규칙을 블루 브랜드 톤에 맞춰 다크네이비 계열로 파생한 것이다(§3 "블루가 전체
+     시각의 중심"과 일치시키기 위함). eum-card 기존 소스에서 이미 쓰이던 값을 그대로 채택했다
+     (즉 새 색을 발명하지 않고, 검증된 기존 실무값을 토큰화만 함 — 도구-증명 계약 §4-A 출처 명시). */
+  --p-ink-900: #101A3D;
+  --p-ink-700: #3A4568;
+  --p-ink-500: #5C6A93;
+
+  /* 비활성(disabled) 상태색 — 정본은 disabled UI를 다루지 않는다(스펙 범위 밖, 명시 고지).
+     WCAG 1.4.3은 disabled 컴포넌트를 대비 검사 예외로 둔다 — 그대로 토큰화만 함. */
+  --p-state-disabled-ink: #A7B2CE;
+  --p-state-disabled-bg: #F3F6FC;
+
+
+  /* ============================================================
+     TIER 2 — SEMANTICS (전부 var(--p-*) 참조, 리터럴 금지)
+     ============================================================ */
+
+  --primary-blue: var(--p-blue-main);
+  --primary-blue-deep: var(--p-blue-deep);
+  --primary-blue-light: var(--p-blue-light);
+  --primary-blue-rgb: var(--p-blue-main-rgb);
+  --primary-blue-deep-rgb: var(--p-blue-deep-rgb);
+  --primary-blue-light-rgb: var(--p-blue-light-rgb);
+
+  --bg-page: var(--p-bg-blue-pale);
+  --bg-surface: var(--p-bg-white);
+  --bg-surface-muted: var(--p-bg-gray-light);
+  --bg-panel: var(--p-bg-blue-panel);
+
+  --accent-mint: var(--p-accent-mint);
+  --accent-yellow: var(--p-accent-yellow);
+  --accent-coral: var(--p-accent-coral);
+  --accent-violet: var(--p-accent-violet);
+
+  --ink: var(--p-ink-900);
+  --ink-secondary: var(--p-ink-700);
+  --ink-tertiary: var(--p-ink-500);
+  --ink-on-blue: var(--p-bg-white);
+
+  --state-disabled-ink: var(--p-state-disabled-ink);
+  --state-disabled-bg: var(--p-state-disabled-bg);
+
+
+  /* ============================================================
+     타이포그래피 (정본 §6 타이포그래피)
+     ============================================================ */
+
+  --font-family-base: Apple SD Gothic Neo, Noto Sans KR, Malgun Gothic, sans-serif;
+
+  --font-weight-title: 800;   /* 제목: Bold~ExtraBold */
+  --font-weight-strong: 700;
+  --font-weight-body: 500;    /* 본문: Regular~Medium */
+
+  --font-size-title: 26px;      /* 제목(h1) */
+  --font-size-subtitle: 14.5px; /* 역할/부제 */
+  --font-size-body: 14.5px;     /* 본문 */
+  --font-size-caption: 13.5px;  /* 보조 문구(tagline) — 정본: 제목의 40~55% 크기 지침 참고 */
+  --font-size-label: 12.5px;    /* 카테고리 라벨 — 정본: "작고 파란색" */
+  --font-size-small: 11px;      /* 보조 소라벨 */
+  --font-size-micro: 9.5px;     /* 최소 텍스트 */
+
+  --line-height-body: 1.65;
+  --line-height-tight: 1.3;
+
+
+  /* ============================================================
+     간격(spacing) — 4px 기준 스케일
+     ============================================================ */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-14: 56px;
+
+  /* 정본 §5 여백 규칙(전체 폭 기준): 좌우 8~12% · 상단 7~10% · 하단 7~10% */
+  --layout-margin-x: 10%;
+  --layout-margin-top: 8.5%;
+  --layout-margin-bottom: 8.5%;
+
+
+  /* ============================================================
+     반경(radius) — 정본 §7 "모서리는 둥글게"
+     ============================================================ */
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 29px;
+  --radius-xl: 32px;
+  --radius-full: 50%;
+
+
+  /* ============================================================
+     그림자 — 정본 §7 "그림자는 부드럽고 넓게" · §8 "경계 뚜렷한 검정 그림자 금지"
+     (전부 블루 톤 rgba, 검정 그림자 사용 안 함 — 스펙 준수)
+     ============================================================ */
+
+  --shadow-frame: 0 30px 60px -26px rgba(var(--primary-blue-deep-rgb), .35);
+  --shadow-cta: 0 14px 26px -12px rgba(var(--primary-blue-rgb), .5);
+  --shadow-soft: 0 18px 30px rgba(var(--primary-blue-deep-rgb), .28);
+  --shadow-orb-inset: inset -5px -7px 12px rgba(var(--primary-blue-deep-rgb), .30),
+                      inset 3px 4px 7px rgba(255, 255, 255, .95),
+                      0 12px 20px -8px rgba(var(--primary-blue-rgb), .5);
+
+  /* 포켓몬 카드형(1호 프로토타입) — 기존 토큰만 조합 */
+  --poke-border: conic-gradient(from 200deg, var(--accent-violet), var(--primary-blue-light), var(--accent-mint), var(--accent-yellow), var(--accent-coral), var(--accent-violet));
+  --poke-head-bg: linear-gradient(135deg, var(--bg-surface), var(--bg-page));
+  --poke-art-bg: radial-gradient(circle at 50% 40%, var(--bg-surface), var(--bg-panel));
+  --poke-shadow: 0 22px 44px rgba(var(--primary-blue-deep-rgb), .22), 0 3px 0 rgba(var(--primary-blue-deep-rgb), .10);
+}
+
+/*
+  다크모드에 대한 명시적 결정(design-token-system 스킬 2단계 "테마=alias 재지정" 게이트 대응):
+  이 디자인 시스템은 정본 §3·§4에서 "배경은 대부분 화이트 또는 블루", "무지개색·과도한 그라데이션
+  금지"를 명시하며, 정본 전체 21개 장 어디에도 다크(어두운) 배경·다크모드 규정이 없다 — 오히려
+  §21 최종 핵심 규칙까지 일관되게 "블루+화이트" 대비만을 요구한다. 따라서 이 v1 토큰 세트는
+  다크 테마를 의도적으로 도입하지 않는다(추측 기반 기능 추가 금지 원칙 — 스펙에 없는 것을
+  만들지 않음). 추후 다크모드가 필요해지면 정본 재해석에 대해 오너 승인을 먼저 받은 뒤
+  [data-theme="dark"] 블록으로 semantics만 재지정할 것(리터럴은 위 PRIMITIVES 확장으로만 추가).
+*/
