@@ -497,7 +497,7 @@
           </form>
           <p class="h2-quick"><span>둘러보기</span><a class="chip" href="#/search/job">직업</a><a class="chip" href="#/search/major">학과</a><a class="chip" href="#/search/school">학교</a><a class="chip" href="#/search/org">기관</a></p>
         </div>
-        <figure class="h2-art sc-frame"><figcaption class="sc-head"><span class="sc-type">소명 길잡이</span><span class="sc-cap">고린도전서 12:31</span></figcaption><img src="assets/home-story.webp" srcset="assets/home-story-960.webp 960w, assets/home-story.webp 1920w" sizes="(max-width:800px) 0px, 46vw" width="1920" height="1080" alt="${HERO_ALT}" decoding="async"></figure>
+        <figure class="h2-art sc-frame"><figcaption class="sc-head"><span class="sc-type">소명 길잡이</span><span class="sc-cap">고린도전서 12:31</span></figcaption><img src="assets/calling-map-og-v6-transparent.png" width="1200" height="630" alt="책에서 펼쳐지는 다양한 소명의 길을 청소년이 바라보는 모습" decoding="async"></figure>
       </section>
       <h2 class="h2-start">무엇을 도와드릴까요?</h2>
       <ul class="entrances">
@@ -507,7 +507,7 @@
         ${card("#/help", 4, "도움 받기", "힘들거나 도움이 필요하다면", "도움받기", "힘들거나 진로가 고민될 때,<br>함께 이야기할 곳을 찾아봐요.", ["진로상담", "청소년상담", "디지털 생활 상담"], "상담 창구 보러 가기 →", "학교 상담실에서 상담사가 청소년의 이야기를 따뜻하게 들어 주는 모습")}
       </ul>
       <section class="h2-about">
-        <figure class="h2-art-m"><img src="assets/home-story-960.webp" width="960" height="540" loading="lazy" decoding="async" alt="${HERO_ALT}"></figure>
+        <figure class="h2-art-m"><img src="assets/calling-map-og-v6-transparent.png" width="1200" height="630" loading="lazy" decoding="async" alt="책에서 펼쳐지는 다양한 소명의 길을 청소년이 바라보는 모습"></figure>
         <div><p class="lead">소명지도는 십자가의 복음 위에서, 하나님이 은혜로 주신 은사를 살펴보고 진로와 소명의 가능성을 찾아 가는 길잡이예요. 어느 교단에도 치우치지 않는 초교파 길잡이로, 성경이 말하는 소명을 바탕에 둬요.</p>
         <figure class="h2-verse"><blockquote><p>너희는 더욱 큰 은사를 사모하라 내가 또한 가장 좋은 길을 너희에게 보이리라</p></blockquote><figcaption>고린도전서 12:31 · 개역개정</figcaption></figure>
         </div>
