@@ -387,3 +387,8 @@ footer .foot-links a{display:inline-flex;align-items:center;min-height:44px;padd
 .map-brand{display:flex;margin-right:0;flex:0 0 auto}
 .map-brand img{display:block;width:auto;height:60px;max-width:100%}.topbar{padding-inline:14px}
 @media(max-width:640px){.map-brand img{height:50px}.topbar{padding-inline:8px}.topbar{gap:10px}.topbar .brand{min-width:0;flex:1}.topbar .logo{max-width:100%;height:auto;max-height:50px}}
+
+/* 메인 히어로 오른쪽 박스: 머리띠(소명 길잡이·고린도전서) 제거, 그림이 박스를 빈틈없이 채움(박스 비율=그림 비율 1200:630 이라 잘림 없음) */
+.h2-art.sc-frame{aspect-ratio:1200/630;width:100%;background:#fff;border-radius:var(--radius-md);overflow:hidden}
+.h2-art.sc-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.h2-art.sc-frame::after{display:none}

@@ -497,7 +497,7 @@
           </form>
           <p class="h2-quick"><span>둘러보기</span><a class="chip" href="#/search/job">직업</a><a class="chip" href="#/search/major">학과</a><a class="chip" href="#/search/school">학교</a><a class="chip" href="#/search/org">기관</a></p>
         </div>
-        <figure class="h2-art sc-frame"><figcaption class="sc-head"><span class="sc-type">소명 길잡이</span><span class="sc-cap">고린도전서 12:31</span></figcaption><img src="assets/calling-map-og-v6-transparent.png" width="1200" height="630" alt="책에서 펼쳐지는 다양한 소명의 길을 청소년이 바라보는 모습" decoding="async"></figure>
+        <figure class="h2-art sc-frame"><img src="assets/calling-map-og-v6-transparent.png" width="1200" height="630" alt="책에서 펼쳐지는 다양한 소명의 길을 청소년이 바라보는 모습" decoding="async"></figure>
       </section>
       <h2 class="h2-start">무엇을 도와드릴까요?</h2>
       <ul class="entrances">
