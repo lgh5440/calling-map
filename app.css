@@ -382,3 +382,8 @@ footer .foot-links a{display:inline-flex;align-items:center;min-height:44px;padd
 .b56-verse p{margin:0;color:var(--ink);font-weight:700}
 .b56-jump{min-height:44px;background:none;border:0;padding:0 4px;font:inherit;font-weight:800;color:var(--primary-blue-deep);cursor:pointer;text-decoration:underline}
 @media (max-width:640px){.b56{padding:4px 14px 12px}}
+
+/* Calling Map logo lockup, preserved from the previous share image. */
+.map-brand{display:flex;margin-right:0;flex:0 0 auto}
+.map-brand img{display:block;width:auto;height:60px;max-width:100%}.topbar{padding-inline:14px}
+@media(max-width:640px){.map-brand img{height:50px}.topbar{padding-inline:8px}.topbar{gap:10px}.topbar .brand{min-width:0;flex:1}.topbar .logo{max-width:100%;height:auto;max-height:50px}}
