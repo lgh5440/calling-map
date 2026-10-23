@@ -486,8 +486,8 @@
       <section class="h2-hero" aria-labelledby="h2-title">
         <div class="h2-copy">
           <h1 id="h2-title" tabindex="-1">소명지도</h1>
-          <p class="h2-head">내게 주신 은사에서 시작해, 앞으로 걸어갈 길을 찾아요</p>
-          <p class="h2-sub">아직 정해지지 않은 앞날도 괜찮아요. 직업·학과·학교, 특수교육까지 열려 있는 길을 하나씩 살펴봐요.</p>
+          <p class="h2-head">내게 주신 은사에서 시작해,<br>앞으로 걸어갈 길을 찾아요</p>
+          <p class="h2-sub">아직 정해지지 않은 앞날도 괜찮아요.<br>직업·학과·학교,<br>특수교육까지 열려 있는 길을 하나씩 살펴봐요.</p>
           <form class="h2-search" id="home-search" role="search" action="#/search">
             <label class="sr-only" for="hs-q">찾고 싶은 이름</label>
             <input type="search" id="hs-q" placeholder="예: 사회복지사, 특수교육, 나사렛" autocomplete="off" maxlength="40">
