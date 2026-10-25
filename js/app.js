@@ -242,7 +242,7 @@
   });
 
   /* ---------- 화면 상태(메모리에만) ---------- */
-  const st = { picked: new Set(), ptype: "", fieldsOff: new Set(), wide: false, shown: {}, lastRange: "#/", lastJob: null, region: "", level: "",
+  const st = { picked: new Set(), ptype: "", fieldsOff: new Set(), wide: false, shown: {}, jobsShown: PAGE, lastRange: "#/", lastJob: null, region: "", level: "",
     sp: { sido: "", sg: "", level: "", est: "", q: "", dis: [], stg: [], shown: PAGE },
     s: { tab: "job", q: "", cat: "", shown: PAGE, sido: "", sg: "" }, origin: "", lastSearch: "#/search" };
 
@@ -495,7 +495,7 @@
             <select id="hs-kind"><option value="job">직업</option><option value="major">학과</option><option value="school">학교</option><option value="org">기관</option></select>
             <button type="submit" class="btn">찾기</button>
           </form>
-          <p class="h2-quick"><span>둘러보기</span><a class="chip" href="#/search/job">직업</a><a class="chip" href="#/search/major">학과</a><a class="chip" href="#/search/school">학교</a><a class="chip" href="#/search/org">기관</a></p>
+          <p class="h2-quick"><span>둘러보기</span><a class="chip" href="#/jobs">직업 모두 보기</a><a class="chip" href="#/search/major">학과</a><a class="chip" href="#/search/school">학교</a><a class="chip" href="#/search/org">기관</a></p>
         </div>
         <figure class="h2-art sc-frame"><img src="assets/calling-map-og-v6-transparent.png" width="1200" height="630" alt="책에서 펼쳐지는 다양한 소명의 길을 청소년이 바라보는 모습" decoding="async"></figure>
       </section>
@@ -1184,6 +1184,18 @@
     setTimeout(sRefresh, 0);
     return { title: "직접 검색하기", html };
   }
+  async function viewJobs() {
+    const { jobs } = await loadScope();
+    const list = jobs.slice().sort(byName);
+    const shown = Math.min(st.jobsShown, list.length);
+    const html = `${crumbs([["처음", "#/"], ["직업 모두 보기"]])}
+      <h1 tabindex="-1">직업 모두 보기</h1>
+      <p class="lead">소명지도에 등록된 직업 ${list.length.toLocaleString("ko-KR")}개예요. 이름이나 분야를 눌러 직업 소개를 살펴보세요.</p>
+      <p class="chips"><a class="chip" href="#/search/job">직업 이름으로 검색</a></p>
+      <ul class="jobs">${list.slice(0, shown).map(jobItem).join("")}</ul>
+      ${shown < list.length ? `<p><button type="button" class="btn ghost" id="jobs-more">더 보기 (${shown}/${list.length})</button></p>` : `<p class="side">직업 ${list.length.toLocaleString("ko-KR")}개를 모두 보여 드렸어요.</p>`}`;
+    return { title: "직업 모두 보기", html };
+  }
   /* ---------- 학교 카드(오너 확정 형식 · 일반학교·특수학교·특수학급 있는 일반학교 상세 · 대학·기관·직업·학과 화면은 이 형식을 쓰지 않는다) ---------- */
   const CARD_NONE = "아직 확인하지 못했어요";
   const cNone = () => `<span class="empty">${CARD_NONE}</span>`;
@@ -1305,6 +1317,7 @@
       else if ((p[0] === "mine" && !p[1]) || p[0] === "gifts") v = await viewGifts();
       else if (p[0] === "mine" && p[1] === "t") v = await viewTypes(p[2]);
       else if (p[0] === "mine" && p[1] === "r") { const sc = await loadScope(); v = sc.combos.has(p[2]) ? await viewRange(p[2], TYPES.includes(p[3]) ? p[3] : "") : await viewGifts(); }
+      else if (p[0] === "jobs" && !p[1]) v = await viewJobs();
       else if (p[0] === "job") v = await viewJob(p[1]);
       else if (p[0] === "major") v = await viewMajor(p[1]);
       else if (p[0] === "school") v = await viewSchool(p[1]);
@@ -1348,6 +1361,7 @@
     const t = ev.target.closest("button");
     if (!t || t.disabled) return;
     if (t.id === "loc-open") { toggleLoc(t); return; }
+    if (t.id === "jobs-more") { st.jobsShown += PAGE; rerender(); return; }
     if (t.id === "route-retry") { route(); return; }
     if (t.id === "search-retry") { sRefresh(); return; }
     if (t.id === "sp-retry") { spRefresh(false); return; }
