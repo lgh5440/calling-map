@@ -516,7 +516,7 @@
       ` };
   }
 
-  const jobCard = r => `<li><a class="jcard" href="${esc(r.href)}"><span class="jthumb"><img src="${esc(r.art)}" width="800" height="600" alt="" loading="lazy" decoding="async"${r.own ? ` onerror="this.onerror=null;this.src='${esc(r.fb)}'"` : ""}><span class="jno" aria-hidden="true">#${String(r.no).padStart(3, "0")}</span>${r.field ? `<span class="jfield">${esc(r.field)}</span>` : ""}</span><span class="jname">${esc(r.name)}</span>${r.sub ? `<span class="jsub">${esc(r.sub)}</span>` : ""}</a></li>`;
+  const jobCard = r => `<li><a class="jcard" href="${esc(r.href)}"${r.preview ? ` data-job-preview="${esc(r.id)}" aria-haspopup="dialog"` : ""}><span class="jthumb"><img src="${esc(r.art)}" width="800" height="600" alt="" loading="lazy" decoding="async"${r.own ? ` onerror="this.onerror=null;this.src='${esc(r.fb)}'"` : ""}><span class="jno" aria-hidden="true">#${String(r.no).padStart(3, "0")}</span>${r.field ? `<span class="jfield">${esc(r.field)}</span>` : ""}</span><span class="jname">${esc(r.name)}</span>${r.sub ? `<span class="jsub">${esc(r.sub)}</span>` : ""}</a></li>`;
 
   async function viewGifts() {                                             // #/gifts — 검사를 마친 사람이 결과표의 은사 3가지를 직접 고른다(저장·전송 없음)
     const n = st.picked.size, key = GIFT_ORDER.filter(g => st.picked.has(g)).sort().join("+");
@@ -1113,7 +1113,7 @@
   const profSub = pf => pf ? [pf.dis && pf.dis.length ? "장애 " + pf.dis.join("·") : "", pf.stage && pf.stage.length ? "과정 " + pf.stage.join("·") : ""] : [];
   const searchIndex = {
     job: () => once("ix-job", async () => { const jobs = (await loadScope()).jobs, no = new Map([...jobs].map(j => j.id).sort().map((id, i) => [id, i + 1]));   // 카드 번호 = 직업 id 순서(직업카드_모음의 ○○○호와 같다)
-      return jobs.map(j => ({ name: j.name, keys: [nk(j.name)], href: "#/job/" + j.id, cats: [j.field], field: j.field, no: no.get(j.id), art: pokeArtSrc(j), own: pokeOwnArt(j), fb: pokeFallbackSrc(j), sub: j.linked ? `학과 ${j.majorCount}개` : "" })).sort(byName); }),
+      return jobs.map(j => ({ id: j.id, preview: true, name: j.name, keys: [nk(j.name)], href: "#/job/" + j.id, cats: [j.field], field: j.field, no: no.get(j.id), art: pokeArtSrc(j), own: pokeOwnArt(j), fb: pokeFallbackSrc(j), sub: j.linked ? `학과 ${j.majorCount}개` : "" })).sort(byName); }),
     major: () => once("ix-major", async () => (await shards("majors")).map(r => ({ name: r[1], keys: r[3].map(nk), href: "#/major/" + r[0], cats: MAJOR_CATS.filter(c => c[1].test(r[1])).map(c => c[0]), sub: "" })).sort(byName)),
     school: () => once("ix-school", async () => {
       const [univ, k, spc, profDoc, spd0] = await Promise.all([shards("schools_univ", BULK_TIMEOUT_MS), loadK12(), k12SpecialRows(), loadSpecialProfile(), file("schools_special.json").catch(() => ({ rows: [] }))]);
@@ -1168,21 +1168,30 @@
     box.dataset.n = String(n);
     box.dataset.state = "done";
   }
-  function viewSearch(tab) {
+  function viewSearch(tab, jobsOnly = false) {
+    if (jobsOnly) Object.assign(st.s, { q: "", cat: "", sido: "", sg: "", shown: PAGE });
     if (st.s.tab !== tab) { st.s.sido = ""; st.s.sg = ""; st.s.cat = ""; }
     st.s.tab = tab;
     const tabs = S_TABS.map(t => `<a class="tabbtn" href="#/search/${t[0]}" ${t[0] === tab ? 'aria-current="page"' : ""}>${t[1]}</a>`).join("");
-    const html = `${crumbs([["처음", "#/"], ["직접 검색하기"]])}
-      <h1 tabindex="-1">직접 검색하기</h1>
-      <p class="lead">직업·학과·학교·기관을 이름으로 찾아요. 쓴 글자는 저장하거나 보내지 않아요.</p>
-      <nav class="tabs four" aria-label="찾을 종류">${tabs}</nav>
+    const pageTitle = jobsOnly ? "직업카드 모아보기" : "직접 검색하기";
+    const html = `${crumbs([["처음", "#/"], [pageTitle]])}
+      <h1 tabindex="-1">${pageTitle}</h1>
+      <p class="lead">${jobsOnly ? "은사를 고르지 않아도 모든 직업카드를 둘러볼 수 있어요. 분야를 고르거나 직업 이름으로 찾아보세요." : "직업·학과·학교·기관을 이름으로 찾아요. 쓴 글자는 저장하거나 보내지 않아요."}</p>
+      ${jobsOnly ? "" : `<nav class="tabs four" aria-label="찾을 종류">${tabs}</nav>`}
       <div class="filters"><label>${esc(S_ASK[tab])} <input type="search" id="ss-q" value="${esc(st.s.q)}" autocomplete="off" maxlength="40"></label></div>
       <p class="side" id="ss-browse-label">이름을 몰라도 분야를 눌러 둘러볼 수 있어요.</p>
       <div class="chips" id="ss-cats" role="group" aria-labelledby="ss-browse-label">${S_CATS[tab].map(c => `<button type="button" class="chip${st.s.cat === c ? " active" : ""}" data-scat="${esc(c)}" aria-pressed="${st.s.cat === c}">${esc(c)}</button>`).join("")}</div>
       ${tab === "org" ? `<p class="side">직업훈련·평생교육 기관을 보여 드려요. 대학의 특수교육 학과는 ‘학교’ 탭의 ‘특수교육 학과’ 칩에서 찾을 수 있어요. 지금은 경기 용인 자료가 가장 많아요.</p>` : ""}
-      <div id="ss-results" data-state="loading"></div>`;
+      <div id="ss-results" data-state="loading"></div>
+      <dialog class="job-preview" id="job-preview" aria-labelledby="job-preview-title">
+        <div class="job-preview-card" data-job-preview-card></div>
+        <div class="job-photo-zoom" data-job-photo-zoom hidden>
+          <div class="job-photo-zoom-actions"><button type="button" class="btn ghost" data-job-zoom-back>설명으로 돌아가기</button><button type="button" class="btn ghost" data-job-preview-close>닫기</button></div>
+          <img data-job-zoom-image alt="">
+        </div>
+      </dialog>`;
     setTimeout(sRefresh, 0);
-    return { title: "직접 검색하기", html };
+    return { title: pageTitle, html };
   }
   async function viewJobs() {
     const { jobs } = await loadScope();
@@ -1195,6 +1204,29 @@
       <ul class="jobs">${list.slice(0, shown).map(jobItem).join("")}</ul>
       ${shown < list.length ? `<p><button type="button" class="btn ghost" id="jobs-more">더 보기 (${shown}/${list.length})</button></p>` : `<p class="side">직업 ${list.length.toLocaleString("ko-KR")}개를 모두 보여 드렸어요.</p>`}`;
     return { title: "직업 모두 보기", html };
+  }
+  /* ---------- 학교 카드(오너 확정 형식 · 일반학교·특수학교·특수학급 있는 일반학교 상세 · 대학·기관·직업·학과 화면은 이 형식을 쓰지 않는다) ---------- */
+  async function openJobPreview(id) {
+    const dlg = $app.querySelector("#job-preview");
+    if (!dlg) return;
+    const sc = await loadScope(), j = sc.byId.get(id);
+    if (!j || !dlg.isConnected) return;
+    const photo = pokeArtSrc(j), own = pokeOwnArt(j), fallback = pokeFallbackSrc(j);
+    const card = dlg.querySelector("[data-job-preview-card]"), zoom = dlg.querySelector("[data-job-photo-zoom]"), zoomImg = dlg.querySelector("[data-job-zoom-image]");
+    card.innerHTML = `<header class="job-preview-head"><span class="job-preview-kicker">직업카드 미리보기</span><button type="button" class="btn ghost" data-job-preview-close>닫기</button></header>
+      <figure class="job-preview-image">${pokeArt(j)}</figure>
+      <div class="job-preview-copy"><p class="job-preview-field">${esc(j.field || "직업")}</p><h2 id="job-preview-title">${esc(j.name)}</h2>
+        <button type="button" class="btn ghost" data-job-zoom-open>그림 크게 보기</button>
+        <h3>직업 설명</h3><p class="job-preview-description">${esc(j.description || "직업 설명 자료가 아직 없어요.")}</p>
+        <p><a class="btn" href="#/job/${esc(j.id)}">소명지도 직업 설명과 준비할 길 보기</a></p>
+      </div>`;
+    zoomImg.src = photo;
+    zoomImg.alt = `${j.name} 그림 확대 보기`;
+    zoomImg.onerror = own ? () => { zoomImg.onerror = null; zoomImg.src = fallback; } : null;
+    card.hidden = false;
+    zoom.hidden = true;
+    if (!dlg.open) dlg.showModal();
+    dlg.querySelector("[data-job-preview-close]").focus();
   }
   /* ---------- 학교 카드(오너 확정 형식 · 일반학교·특수학교·특수학급 있는 일반학교 상세 · 대학·기관·직업·학과 화면은 이 형식을 쓰지 않는다) ---------- */
   const CARD_NONE = "아직 확인하지 못했어요";
@@ -1309,15 +1341,15 @@
     try { p = h.replace(/^#\/?/, "").split("/").map(decodeURIComponent); } catch (e) { p = ["!bad-hash"]; }   // 주소 글자가 깨졌으면 아래 가지 어디에도 안 걸려 '찾을 수 없는 화면'으로 끝난다
     let v;
     try {
-      if (p[0] === "search" || !p[0]) st.fromTalent = false;
-      if (p[0] === "search") { st.origin = "search"; st.lastSearch = h; st.lastJob = null; }
+      if (p[0] === "search" || p[0] === "jobs" || !p[0]) st.fromTalent = false;
+      if (p[0] === "search" || p[0] === "jobs") { st.origin = "search"; st.lastSearch = h; st.lastJob = null; }
       else if (p[0] === "mine" || p[0] === "gifts") st.origin = "mine";
       else if (p[0] === "special" || !p[0]) st.origin = "";
       if (!p[0]) v = viewHome();
       else if ((p[0] === "mine" && !p[1]) || p[0] === "gifts") v = await viewGifts();
       else if (p[0] === "mine" && p[1] === "t") v = await viewTypes(p[2]);
       else if (p[0] === "mine" && p[1] === "r") { const sc = await loadScope(); v = sc.combos.has(p[2]) ? await viewRange(p[2], TYPES.includes(p[3]) ? p[3] : "") : await viewGifts(); }
-      else if (p[0] === "jobs" && !p[1]) v = await viewJobs();
+      else if (p[0] === "jobs" && !p[1]) v = viewSearch("job", true);
       else if (p[0] === "job") v = await viewJob(p[1]);
       else if (p[0] === "major") v = await viewMajor(p[1]);
       else if (p[0] === "school") v = await viewSchool(p[1]);
@@ -1358,8 +1390,17 @@
     if (btn) btn.click();
   });
   $app.addEventListener("click", ev => {
+    const a = ev.target.closest("a[data-job-preview]");
+    if (a) { ev.preventDefault(); openJobPreview(a.dataset.jobPreview); return; }
+    const dlg = ev.target.closest("dialog#job-preview");
+    if (dlg && ev.target === dlg) dlg.close();
+  });
+  $app.addEventListener("click", ev => {
     const t = ev.target.closest("button");
     if (!t || t.disabled) return;
+    if (t.hasAttribute("data-job-zoom-open")) { const dlg = t.closest("dialog"), card = dlg.querySelector("[data-job-preview-card]"), zoom = dlg.querySelector("[data-job-photo-zoom]"); card.hidden = true; zoom.hidden = false; zoom.querySelector("[data-job-zoom-back]").focus(); return; }
+    if (t.hasAttribute("data-job-zoom-back")) { const dlg = t.closest("dialog"), card = dlg.querySelector("[data-job-preview-card]"), zoom = dlg.querySelector("[data-job-photo-zoom]"); zoom.hidden = true; card.hidden = false; card.querySelector("[data-job-zoom-open]").focus(); return; }
+    if (t.hasAttribute("data-job-preview-close")) { t.closest("dialog").close(); return; }
     if (t.id === "loc-open") { toggleLoc(t); return; }
     if (t.id === "jobs-more") { st.jobsShown += PAGE; rerender(); return; }
     if (t.id === "route-retry") { route(); return; }
